@@ -1,0 +1,94 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+    basicstyle=\ttfamily, basewidth=0.5em
+}
+
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{周钰, 3230105681}
+\chead{数据结构与算法第四次作业}
+\rhead{Oct.20th, 2024}
+
+\section{测试程序的设计思路}
+我首先创建了一个链表，含有数字4，5;  
+
+第一步：先测试右值插入。向尾部插入6，再插入7；向头部插入3，再插入2。采用打印的方式检查结果是否正确。  
+
+第二步：检查列表的大小和是否为空链表。  
+
+第三步：测试++功能和--功能。分别测试前置自增运算符、后置自增运算符、前置自减运算符、后置自减运算符。  
+
+第四步：测试访问首尾元素，通过输出验证正确性。  
+
+第五步：测试删除链表的首尾元素，并使用迭代器遍历链表，输出结果验证删除操作是否正确。  
+
+第六步：使用clear方法清空链表，并输出链表大小，验证清空操作是否正确。  
+
+第七步：测试拷贝构造。先插入3和4，再创建一个链表copyList，同时把myList赋值给它。使用迭代器遍历copList，输出结果验证拷贝构造是否正确。  
+
+第八步：测试赋值运算符。创建anotherList，再将myList赋值给anotherList。使用迭代器遍历anotherList，输出结果以验证赋值运算符是否正确。 
+
+\section{测试的结果}
+
+测试结果一切正常。
+
+我用 valgrind 进行测试，发现没有发生内存泄露。
+
+\section{（可选）bug报告}
+
+我发现了一个 bug，触发条件如下：
+当有一个空链表，我们对其运用pop\_back函数时，会报错；
+
+\begin{enumerate}
+    \item 首先，空链表是一个常见的测试是否有bug的边界条件，删除列表元素也容易引起指针丢失的问题；
+    \item 然后，我对一个空链表测试了pop\_back删除功能；
+    \item 此时发现，erase()中“p->prev->next”会出现报错。
+    
+\end{enumerate}
+
+据我分析，它出现的原因是：
+pop\_back中，会首先通过end()获得tail节点;
+
+然后进行--it操作，此时tail的pre指针会指向head，也就是说it会指向head节点；	
+
+随后会对it执行erase()操作，此时“	p->prev->next = p->next;”中的p->prev->next不存在，会引起报错.
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
