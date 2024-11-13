@@ -1,0 +1,65 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+    basicstyle=\ttfamily, basewidth=0.5em
+}
+
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{周钰, 3230105681}
+\chead{数据结构与算法第六次作业}
+\rhead{Oct.20th, 2024}
+
+\section{AVLtree的设计思路}
+因为AVLtree需要保证左右子树的高度差不超过1，所以先对insert函数进行修改，在原有的插入操作后，进行平衡调整，使得每一次插入后都满足平衡条件，并且更新高度差；
+
+在此之后，对remove函数进行修改：因为第五次作业没有实现节点替换，所以先把节点替换这一功能完成；之后，在原有的remove函数上进行平衡调整和更新高度差。
+
+\section{平衡调整}
+
+
+   平衡调整分为左旋，右旋和双旋，并且旋转过后需要更新高度差；
+   
+   对于左旋，如果一个节点的height为2，并且右孩子height为1，进行左旋，也就是改变当前节点和父节点的指针关系；右旋同理；
+   
+   当插入一个元素对于其父子树和父子树的父子树都破坏了平衡原则，那么需要进行双旋，具体就是先进行左旋，再进行右旋或者先右旋再左旋。   
+   
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
