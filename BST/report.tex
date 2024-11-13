@@ -1,0 +1,78 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+    basicstyle=\ttfamily, basewidth=0.5em
+}
+
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{周钰, 3230105681}
+\chead{数据结构与算法第四次作业}
+\rhead{Oct.20th, 2024}
+
+\section{修改remove的思路函数}
+首先，课堂上分析时指出原先的remove函数递归有重复操作，效率较低；
+
+结合作业中的提示，想要修改后的remove函数对删除的节点有两个子节点的情况进行优化，利用BinaryNode* detachMin(BinaryNode* \&t)函数查找以 t 为根的子树中的最小节点，返回这个节点，并从原子树中删除这个节点，并且当要删除的节点具有两个子树时，通过这个函数返回的右子树最小节点将代替被删除节点；在函数BinaryNode* detachMin(BinaryNode* \&t)具体的实现过程中，采用递归；
+
+对于remove函数的修改主要是在if语句中，当发现删除的元素有两个子节点时，将原先的仅替换值而不替换节点的部分修改为调用BinaryNode* detachMin(BinaryNode* \&t)函数进行节点替换；
+
+
+
+
+\section{main函数的设计思路与测试结果}
+
+\begin{enumerate}
+
+    \item 我首先创建了一个二叉搜索树，先后向其中插入元素10，5，15，3，7，12，18；
+    \item 第一步：先测试打印和二叉树基本的排序功能，打印二叉树全部元素;
+    \item 第二步：测试查找最小和最大元素功能，并打印输出；
+    \item 第三步：测试contains功能，先后查找元素7和20，并且找到输出Yes，反之输出No；  
+    \item 第四步：测试删除功能，先后删除7和10，并且分别打印结果； 
+    \item 第五步：测试清空树并且检查是否为空，打印结果；  
+    \item 第六步：测试拷贝构造函数和赋值运算符，创建一个新的二叉搜索树bst2，向其中插入1，3，2，然后再创建bst3，bst4分别测试拷贝构造函数和赋值运算符，并分别打印结果；
+    \item 第七步：测试移动构造函数和移动赋值运算符，创建新的二叉搜索树bst5和bst6用来分别测试移动构造函数和赋值运算符，并分别打印结果。
+
+\end{enumerate}
+
+\section{内存泄露检查}
+没有测试异常情况时，我用 valgrind 进行测试，发现没有发生内存泄露。
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
