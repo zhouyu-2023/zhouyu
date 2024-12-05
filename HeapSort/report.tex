@@ -1,0 +1,110 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+    basicstyle=\ttfamily, basewidth=0.5em
+}
+
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{周钰, 3230105681}
+\chead{数据结构与算法第七次作业}
+
+\section{设计思路}
+1.heapsort 函数
+其功能是对传入的 std::vector<typename> 进行堆排序；
+实现细节：
+首先，通过 percDown 函数从最后一个非叶子节点开始向上构建最大堆。
+然后，将堆顶元素（最大值）与最后一个元素交换，减小堆的大小，并重新调整堆以保持最大堆的性质。
+重复上述过程，直到堆的大小为1，即完成排序。
+
+2.percDown 函数
+其功能是用于构建最大堆和删除最大元素后调整堆结构。
+实现细节：
+从指定的节点开始，将其与子节点中较大的值进行比较，如果当前节点值小于子节点中的最大值，则交换它们。
+继续这个过程，直到找到正确的位置或者到达叶子节点。
+
+\section{测试流程}
+
+1.生成测试数据：分别生成长度为1,000,000的随机序列、有序序列、逆序序列和部分元素重复序列。其中，使用随机数生成器和特定的分布来生成随机序列，使用简单的循环生成有序序列和逆序序列，通过限制随机数生成器的取值范围来生成部分元素重复序列。
+
+
+2.执行排序：对每种类型的序列，分别使用自定义的 heapsort 函数和 STL 的 std::sort\_heap 函数进行排序，并使用chrono记录并比较两种排序方法的执行时间。
+
+
+\section{效率对比}
+\begin{table}[h!]
+	\begin{center}
+		\begin{tabular}{|l|c|r|} 
+			\hline
+			\textbf{ } & \textbf{my heapsort time} & \textbf{std::sort\_heap time}\\
+			\hline
+			random sequence & 0.359594s & 0.965745s\\
+			\hline
+			ordered sequence & 0.243334s & 0.83748s\\
+			\hline
+			reverse sequence & 0.210941s & 0.74334s\\
+			\hline
+			repetitive sequence & 0.252258s & 0.804494s\\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+\section{原因分析}
+heapsort()的排序时间在四种情况下都小于std::sort\_heap的排序时间。
+
+分析如下：
+
+ 
+1.heapsort()提供了更多的控制，因为它包含了堆的构建和排序的完整过程,用户可以自定义堆的行为（例如，通过修改 percDown 函数来实现最小堆排序）;
+
+
+std::sort\_heap()：灵活性较低，因为它只负责排序已经构建好的堆,用户需要自己管理堆的构建和可能的其他操作（如插入和删除）。
+
+
+2.heapsort()适用于需要直接对一个数组或 std::vector 进行堆排序的场景。
+
+
+  而std::sort\_heap()：用户需要先使用 std::make\_heap() 或其他方式构建堆，然后调用 std::sort\_heap()。
+  
+3.heapsort()作为普通函数被优化，
+
+而std::sort\_heap() 作为一个模板函数，可能无法像普通函数那样被优化。
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
