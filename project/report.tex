@@ -1,0 +1,79 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+    basicstyle=\ttfamily, basewidth=0.5em
+}
+
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{周钰, 3230105681}
+\chead{四则运算器}
+\rhead{2024.12.22}
+
+\section{设计思路}
+处理中缀运算式，将符号和数字分开来处理，建立了op和nums两个stack；
+
+处理op时，分为+,-,*,/四则运算符号，和（,）左右括号，和其他不合法字符。按照中缀运算式的思路，先检查是否含有不合法字符并报错，随后对四则运算符号设立了优先级，再对含有左右括号的情况进行讨论。
+
+遇到左括号时，将其直接塞入stack中；遇到）时，弹出op stack里顶部运算符直至遇到（为止；
+
+处理nums时，先将运算式中的数字提取出来，然后字符串转换成数字，最后压入nums stack；
+
+在计算时，运用定义的优先级和op stack，nums stack设计calculate函数，返回double类型的值。
+
+\section{异常情况处理果}
+
+异常情况有很多，根据作业要求和实际设计时遇到的问题，可以分为：
+
+1.计算式中除数为0。在calculate中进行检验。
+
+
+2.连续使用运算符/开头出现运算符号/出现其他符号。在得到输入中缀表达式后，进行合法性检验。
+
+
+3.左右括号数量不匹配。在处理（）时，对他们分别计数，数量不一致时报错。
+
+
+\section{考虑负数情况}
+对于负数情况，我将负数x变为‘0-x’处理。
+
+由于设置了运算优先级和对连续使用运算符的异常情况判断，计算负数时必须添加括号，例如 1+（-2），（-2）/1 等情况。
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
