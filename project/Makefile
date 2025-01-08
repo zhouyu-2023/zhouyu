@@ -1,5 +1,5 @@
 all: 
-	g++ 16.cpp -o main -std=c++20 -O2
+	g++ 18.cpp -o main -std=c++20 -O2
 
 run:main
 	./main

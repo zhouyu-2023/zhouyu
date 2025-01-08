@@ -7,8 +7,6 @@
 
 
 // 优先级函数
-
-
 int priority(char op) {
     switch(op) {
         case '*':
@@ -25,7 +23,7 @@ int priority(char op) {
 // 计算函数
 double calculate(char op, std::stack<double>& nums) {
     if (nums.size() < 2) {
-        std::cout << "ILLEGAL" << std::endl;
+        std::cout << "ILLEGAL1" << std::endl;
         std::exit(EXIT_FAILURE);
     }
     double b = nums.top();
@@ -42,7 +40,7 @@ double calculate(char op, std::stack<double>& nums) {
             return a * b;
         case '/':
             if (b == 0) {
-                std::cout << "ILLEGAL" << std::endl;
+                std::cout << "ILLEGAL2" << std::endl;
                 std::exit(EXIT_FAILURE);
             }
             return a / b;
@@ -58,19 +56,19 @@ void evaluate_expression(const std::string& ss) {
 
     // 输入合法性检查
     if (ss[0] == '+' || ss[0] == '/' || ss[0] == '*' || ss[0] == ')') {
-        std::cout << "ILLEGAL" << std::endl;
+        std::cout << "ILLEGAL3" << std::endl;
         return;
     }
 
     for (int i = 0; i < ss.length(); i++) {
         if ((ss[i] == '+' || ss[i] == '-' || ss[i] == '*' || ss[i] == '/') &&
             (ss[i + 1] == '+' || ss[i + 1] == '-' || ss[i + 1] == '*' || ss[i + 1] == '/')) {
-            std::cout << "ILLEGAL" << std::endl;
+            std::cout << "ILLEGAL4" << std::endl;
             return;
         }
         if ((!isdigit(ss[i])) && (ss[i] != '+') && (ss[i] != '-') && (ss[i] != '*') && (ss[i] != '/') && 
             (ss[i] != '(') && (ss[i] != ')') && (ss[i] != '.')) {
-            std::cout << "ILLEGAL" << std::endl;
+            std::cout << "ILLEGAL5" << std::endl;
             return;
         }
     }
@@ -82,14 +80,14 @@ void evaluate_expression(const std::string& ss) {
         if (ss[i] == ')') nr++;
     }
     if (nr != nl) {
-        std::cout << "ILLEGAL" << std::endl;
+        std::cout << "ILLEGAL6" << std::endl;
         return;
     }
 
     // 替换负号为“0-”处理负数
     string1 = "";
     for (int i = 0; i < ss.length(); i++) {
-        if (ss[i] == '-' && (i == 0 || !isdigit(ss[i - 1]))) {
+        if (ss[i] == '-' &&ss[i-1] != ')'&& (i == 0 || !isdigit(ss[i - 1]))) {
             string1 += "0-";
         } else {
             string1 += ss[i];
@@ -110,6 +108,7 @@ void evaluate_expression(const std::string& ss) {
         if (in1 != "") {
             double num = std::stod(in1);
             nums.push(num);
+            //std::cout<<"num:"<<nums.top()<<std::endl;
         }
 
         // 处理操作符
@@ -150,6 +149,6 @@ void evaluate_expression(const std::string& ss) {
     if (!nums.empty()) {
         std::cout << "result: " << nums.top() << std::endl;
     } else {
-        std::cout << "ILLEGAL" << std::endl;
+        std::cout << "ILLEGAL7" << std::endl;
     }
 }
